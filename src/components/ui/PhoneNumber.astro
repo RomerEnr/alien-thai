@@ -1,10 +1,11 @@
 ---
-import { PLACEHOLDER_COPY } from '@/config/copy';
-import { SITE, telUrl } from '@/config/site';
-import Placeholder from './Placeholder.astro';
+import { telUrl } from '@/config/site';
 
-/** The gym's phone as a tel: link, or a visible placeholder until it's confirmed. */
-const { phone } = SITE;
+interface Props {
+  phone: string;
+}
+
+const { phone } = Astro.props;
 ---
 
-{phone ? <a class="phone" href={telUrl(phone)}>{phone}</a> : <Placeholder>{PLACEHOLDER_COPY.phone}</Placeholder>}
+<a class="phone" href={telUrl(phone)}>{phone}</a>

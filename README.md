@@ -72,6 +72,6 @@ tools/encode-video.sh gallery         clips/room.mp4           # → gallery-roo
 ## Pendiente antes de publicar
 
 - La imagen del hero, el plano del gimnasio de la historia y los clips de precios están **generados con IA**: Mizzian debe aprobarlos.
-- **Teléfono:** falta. Se pone en `SITE.phone` (`src/config/site.ts`) y sustituye solo al marcador `[Teléfono]` del contacto y del footer.
+- **Teléfono:** no se muestra. Al ponerlo en `SITE.phone` (`src/config/site.ts`) aparece en el contacto y en el footer.
 - **Galería:** salen alumnos y Hecher Sosa. El gimnasio debe confirmar que tiene su permiso (y el de los tutores de cualquier menor).
 - Aviso legal, Privacidad y Cookies aparecen en el footer sin enlace hasta que existan esas páginas.

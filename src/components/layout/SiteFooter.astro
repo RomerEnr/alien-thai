@@ -38,7 +38,7 @@ const { street, postalCode, town, island } = SITE.address;
         <div>
           <p class="contact-title">{FOOTER_COPY.contact}</p>
           <address><p>{street}<br />{postalCode} {town}</p></address>
-          <p><PhoneNumber /></p>
+          {SITE.phone && <p><PhoneNumber phone={SITE.phone} /></p>}
         </div>
         <ul role="list" class="legal" aria-label={FOOTER_COPY.legalLabel}>
           {LEGAL_PAGES.map((page) => <li>{page}</li>)}

@@ -10,7 +10,7 @@ export const SITE = {
   locale: 'es_ES',
   themeColor: '#0f100a',
   address: { street: 'Camino Viejo 56', postalCode: '38280', town: 'Tegueste', island: 'Tenerife' },
-  /** Still to be confirmed by the gym: until then a visible placeholder shows. */
+  /** Not public yet: contact and footer show it only once it is set. */
   phone: null as string | null,
   areas: ['Tegueste', 'Tejina', 'Bajamar', 'La Punta', 'Valle Guerra'],
   instagram: 'alienthai_',

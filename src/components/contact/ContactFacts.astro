@@ -11,8 +11,14 @@ const labels = CONTACT_COPY.facts;
 <dl class="facts">
   <dt>{labels.address}</dt>
   <dd><address>{SITE.name}<br />{street}<br />{postalCode} {town}, {island}</address></dd>
-  <dt>{labels.phone}</dt>
-  <dd><PhoneNumber /></dd>
+  {
+    SITE.phone && (
+      <>
+        <dt>{labels.phone}</dt>
+        <dd><PhoneNumber phone={SITE.phone} /></dd>
+      </>
+    )
+  }
   <dt>{labels.instagram}</dt>
   <dd><InstagramLink handle={SITE.instagram} owner={SITE.name} variant="inline" /></dd>
 </dl>

@@ -68,7 +68,6 @@ export const FOOTER_COPY = {
 } as const;
 
 export const PLACEHOLDER_COPY = {
-  phone: '[Teléfono]',
   days: 'Días',
   hours: 'horas por confirmar',
 } as const;
