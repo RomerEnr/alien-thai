@@ -69,6 +69,14 @@ tools/encode-video.sh gallery         clips/room.mp4           # → gallery-roo
 | `plan` | 480×640 | 27 | 6 |
 | `gallery` | 540×676 | 27 | 48 |
 
+## Imagen para compartir
+
+La tarjeta que sale al compartir el enlace (Open Graph y X) está en `src/assets/images/social/share.webp` y la monta `SocialMeta.astro`, que la sirve en JPG a 1200×630 con URL absoluta. Se compone desde el hero con las fuentes de la web:
+
+```bash
+npm run build && python3 tools/make-share-image.py
+```
+
 ## Pendiente antes de publicar
 
 - La imagen del hero, el plano del gimnasio de la historia y los clips de precios están **generados con IA**: Mizzian debe aprobarlos.
