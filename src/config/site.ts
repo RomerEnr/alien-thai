@@ -28,14 +28,13 @@ export const CTA = {
   timetable: { label: 'Ver horarios', href: TIMETABLE_HREF },
 } as const;
 
-/** Menu order. Horarios and Veladas are still to be built. */
+/** The page's sections, in page order: each href is a section id. */
 export const NAV_LINKS = [
   { label: 'Clases', href: '#clases' },
-  { label: 'Horarios', href: TIMETABLE_HREF },
   { label: 'Precios', href: '#precios' },
   { label: 'Historia', href: '#historia' },
   { label: 'Equipo', href: '#equipo' },
-  { label: 'Veladas', href: '#veladas' },
+  { label: 'Galería', href: '#galeria' },
   { label: 'Contacto', href: '#contacto' },
 ] as const;
 
