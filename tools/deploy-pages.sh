@@ -19,7 +19,7 @@ main() {
   commit="$(git rev-parse --short HEAD)"
   local tmp
   tmp="$(mktemp -d)"
-  trap 'rm -rf "$tmp"' EXIT
+  trap "rm -rf '$tmp'" EXIT
 
   cp -R dist/. "$tmp"
   git -C "$tmp" init --quiet --initial-branch="$BRANCH"
