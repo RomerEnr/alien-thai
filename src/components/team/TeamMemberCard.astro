@@ -1,0 +1,175 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import Icon from '@/components/ui/Icon.astro';
+import InstagramLink from '@/components/ui/InstagramLink.astro';
+import { TEAM_CARD_COPY } from '@/config/copy';
+
+interface Props {
+  teacher: CollectionEntry<'teachers'>;
+  /** Position in its row, for the staggered reveal and the float. */
+  index: number;
+}
+
+const PORTRAIT_WIDTHS = [480, 800, 1200];
+const PORTRAIT_SIZES = '(max-width: 700px) min(82vw, 340px), (max-width: 1100px) min(70vw, 360px), 32vw';
+
+const { teacher, index } = Astro.props;
+const { name, role, instagram, portrait } = teacher.data;
+const bioId = `bio-${teacher.id}`;
+const { Content } = await render(teacher);
+---
+
+<li class="member" style={`--i:${index}; --focus:${portrait.focus}`} data-reveal-media data-team-member>
+  <figure>
+    <ResponsivePicture image={portrait.src} widths={PORTRAIT_WIDTHS} sizes={PORTRAIT_SIZES} alt={portrait.alt} />
+  </figure>
+  <div class="heading">
+    <h3>{name}</h3>
+    <p class="role">{role}</p>
+  </div>
+  <button class="toggle" type="button" aria-expanded="false" aria-controls={bioId} data-bio-toggle>
+    <span class="sr-only">{TEAM_CARD_COPY.bioToggle(name)}</span>
+    <span class="plus"><Icon name="plus" /></span>
+  </button>
+  <div class="bio" id={bioId}>
+    <Content />
+    <InstagramLink handle={instagram} owner={name} />
+  </div>
+</li>
+
+<style>
+  /* The whole card is the photo, capped so it always fits under the solid
+     nav; the name sits on it and the bio rises over it. */
+  .member {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    max-height: calc(100svh - var(--nav-h-solid) - 24px);
+    background: var(--tatami-2);
+  }
+
+  figure {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  figure :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus);
+    transition: transform 0.9s var(--ease-out), filter 0.6s;
+  }
+
+  .heading {
+    position: absolute;
+    inset: 0 0 auto;
+    padding: clamp(16px, 1.8vw, 24px);
+    background: linear-gradient(180deg, rgb(var(--shade) / 0.6), rgb(var(--shade) / 0));
+  }
+  h3 {
+    margin: 0;
+    font: 900 clamp(1.9rem, 2.6vw, 2.6rem) / 0.9 var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+  }
+  .role {
+    margin: 8px 0 0;
+    font: 400 11px / 1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  /* The toggle covers the card, so a tap anywhere opens the bio; its + sits
+     in the corner and turns into ×. */
+  .toggle {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--wall);
+    cursor: pointer;
+  }
+  .toggle:focus-visible { outline-offset: -4px; }
+  .plus {
+    position: absolute;
+    top: clamp(14px, 1.6vw, 20px);
+    right: clamp(14px, 1.6vw, 20px);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgb(239 235 223 / 0.4);
+    border-radius: 50%;
+    transition: transform 0.45s var(--ease-out), background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .plus :global(svg) {
+    width: 12px;
+    height: 12px;
+  }
+
+  .bio {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 56px clamp(16px, 1.8vw, 24px) clamp(16px, 1.8vw, 22px);
+    background: linear-gradient(0deg, rgb(var(--shade) / 0.96) 0%, rgb(var(--shade) / 0.9) 62%, rgb(var(--shade) / 0) 100%);
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.45s ease, transform 0.6s var(--ease-out);
+  }
+  .bio :global(p) {
+    max-width: 40ch;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .bio :global(q) { color: var(--green); }
+  .bio :global(.instagram) {
+    position: relative;
+    z-index: 2;
+    margin-top: 12px;
+  }
+
+  /* Open: a tap (.is-open), keyboard focus, or hover where there is one. */
+  .member:global(.is-open) .bio,
+  .member:has(:focus-visible) .bio,
+  :global(html:not(.js)) .bio {
+    opacity: 1;
+    transform: none;
+  }
+  .member:global(.is-open) .plus,
+  .member:has(:focus-visible) .plus {
+    transform: rotate(45deg);
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--tatami);
+  }
+  .member:global(.is-open) figure :global(img),
+  .member:has(:focus-visible) figure :global(img) { filter: brightness(0.8); }
+
+  @media (--can-hover) {
+    .member:hover .bio {
+      opacity: 1;
+      transform: none;
+    }
+    .member:hover figure :global(img) {
+      transform: scale(1.035);
+      filter: brightness(0.8);
+    }
+    .member:hover .plus {
+      transform: rotate(45deg);
+      border-color: var(--green);
+      background: var(--green);
+      color: var(--tatami);
+    }
+  }
+
+  @media (--upto-phone) {
+    .bio :global(p) { font-size: 14.5px; }
+  }
+</style>

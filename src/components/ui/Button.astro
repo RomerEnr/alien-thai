@@ -1,0 +1,57 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  /** Opens another site in a new tab. */
+  external?: boolean;
+}
+
+const { href, variant = 'primary', external = false } = Astro.props;
+const newTab = external ? { target: '_blank', rel: 'noopener' } : {};
+---
+
+<a class:list={['button', `button--${variant}`]} href={href} {...newTab}>
+  <slot />
+  {variant === 'primary' && <Icon name="arrow" class="button__icon" />}
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 56px;
+    padding: 0 28px;
+    font: 600 16px / 1 var(--sans);
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .button:active { transform: translateY(1px); }
+
+  .button--primary {
+    background: var(--green);
+    color: var(--tatami);
+  }
+  .button--primary:hover { background: var(--wall); }
+
+  .button :global(.button__icon) {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .button:hover :global(.button__icon) { transform: translateX(4px); }
+
+  .button--ghost {
+    border: 1.5px solid rgb(239 235 223 / 0.55);
+    color: var(--wall);
+  }
+  .button--ghost:hover { border-color: var(--wall); }
+
+  @media (--upto-phone) {
+    .button { flex: 1 1 100%; }
+    .button--primary { justify-content: space-between; }
+  }
+</style>

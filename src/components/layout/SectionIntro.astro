@@ -1,0 +1,57 @@
+---
+import SplitHeading from '@/components/ui/SplitHeading.astro';
+
+interface Props {
+  headingId: string;
+  heading: readonly string[];
+  lede: string;
+}
+
+const { headingId, heading, lede } = Astro.props;
+const hasAside = Astro.slots.has('default');
+---
+
+<div class="intro">
+  <SplitHeading id={headingId} lines={heading} motion="scroll" class="display-heading" />
+  {
+    hasAside ? (
+      <div class="aside">
+        <p>{lede}</p>
+        <slot />
+      </div>
+    ) : (
+      <p>{lede}</p>
+    )
+  }
+</div>
+
+<style>
+  .intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px 48px;
+    margin-bottom: var(--intro-space, clamp(32px, 4vw, 56px));
+  }
+
+  /* Controls that belong to the section sit under the lede, flush right. */
+  .aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 20px;
+  }
+
+  p {
+    margin: 0;
+    max-width: 34ch;
+    color: var(--wall-dim);
+    font-size: 17px;
+  }
+
+  @media (--upto-phone) {
+    .aside { align-items: flex-start; }
+    p { font-size: 16px; }
+  }
+</style>

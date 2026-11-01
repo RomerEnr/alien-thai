@@ -1,0 +1,50 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { toThaiNumeral } from '@/lib/text';
+
+interface Props {
+  value: number;
+  image: ImageMetadata;
+  /** Optical size correction for this glyph. */
+  scale: number;
+}
+
+/** Drawn at most this tall (CSS px); the 2x density covers retina screens. */
+const DISPLAY_HEIGHT = 96;
+
+const { value, image, scale } = Astro.props;
+---
+
+<span class="numeral" style={`--scale:${scale}`}>
+  <Picture
+    src={image}
+    alt=""
+    height={DISPLAY_HEIGHT}
+    densities={[1, 2]}
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="sr-only">{toThaiNumeral(value)}</span>
+</span>
+
+<style>
+  /* The glyph is sized by the font size, like the Thai digit it replaces. */
+  .numeral {
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    line-height: 0.9;
+  }
+  .numeral :global(img) {
+    width: auto;
+    height: calc(1.1em * var(--scale));
+  }
+
+  @media (--upto-tablet) {
+    .numeral {
+      font-size: 4rem;
+      line-height: 1;
+    }
+  }
+</style>

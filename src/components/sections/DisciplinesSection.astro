@@ -1,0 +1,41 @@
+---
+import DisciplineCard from '@/components/disciplines/DisciplineCard.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionIntro from '@/components/layout/SectionIntro.astro';
+import { DISCIPLINES_COPY } from '@/config/copy';
+import { getDisciplines } from '@/lib/content';
+
+const HEADING_ID = 'clases-heading';
+const disciplines = await getDisciplines();
+---
+
+<Section id="clases" labelledBy={HEADING_ID} variant="opening">
+  <SectionIntro headingId={HEADING_ID} heading={DISCIPLINES_COPY.heading} lede={DISCIPLINES_COPY.lede} />
+  <ul role="list" class="rail list" data-rail="phone" data-reveal>
+    {disciplines.map((discipline, index) => <DisciplineCard discipline={discipline} index={index} />)}
+  </ul>
+</Section>
+
+<style>
+  .list {
+    --rail-item: min(82vw, 340px);
+    --rail-gap: 14px;
+    --card-text: 312px;
+  }
+
+  /* Above phones the rail is a plain three-column grid. */
+  @media (--from-phone) {
+    .list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.4vw, 36px);
+    }
+  }
+
+  @media (--upto-desktop) {
+    .list { --card-text: 332px; }
+  }
+  @media (--upto-phone) {
+    .list { --card-text: 330px; }
+  }
+</style>

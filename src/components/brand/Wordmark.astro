@@ -1,0 +1,38 @@
+---
+import { SITE } from '@/config/site';
+import AlienMark from './AlienMark.astro';
+
+interface Props {
+  /** Accessible name of the link back to the top. */
+  label?: string;
+}
+
+const { label = `${SITE.name}, inicio` } = Astro.props;
+const [first, second] = SITE.name.split(' ');
+---
+
+<a class="wordmark" href="#main" aria-label={label} data-menu-inert>
+  {first}<AlienMark class="wordmark__mark" />{second}
+</a>
+
+<style>
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.24em;
+    font: 900 var(--wordmark-size, 30px) / 1 var(--display);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: font-size 0.4s var(--ease-out);
+  }
+
+  .wordmark :global(.wordmark__mark) {
+    width: auto;
+    height: 0.86em;
+    margin: 0 0.02em;
+    flex: none;
+    transition: transform 0.45s var(--ease-out);
+  }
+  .wordmark:hover :global(.wordmark__mark) { transform: rotate(-8deg) scale(1.06); }
+</style>

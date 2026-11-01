@@ -1,0 +1,24 @@
+{
+  "name": "alien-thai-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "tools/deploy-pages.sh",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.4.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@csstools/postcss-global-data": "^4.0.0",
+    "postcss-custom-media": "^12.0.3",
+    "typescript": "^6.0.3"
+  }
+}

@@ -1,0 +1,35 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+---
+
+<a class="text-link" href={href}><slot /> <Icon name="arrow-small" class="text-link__icon" /></a>
+
+<style>
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line);
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .text-link:hover {
+    color: var(--green);
+    border-color: var(--green);
+  }
+  .text-link :global(.text-link__icon) {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .text-link:hover :global(.text-link__icon) { transform: translateX(3px); }
+</style>

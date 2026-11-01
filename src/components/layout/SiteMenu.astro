@@ -1,0 +1,141 @@
+---
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import { MENU_COPY } from '@/config/copy';
+import { NAV_LINKS, SITE } from '@/config/site';
+import { joinAsList } from '@/lib/text';
+import blueAlien from '@/assets/images/brand/blue-alien.webp';
+---
+
+<nav class="site-menu" id="site-menu" aria-label="Principal" aria-hidden="true" data-menu>
+  <ol role="list" class="links">
+    {
+      NAV_LINKS.map((link, i) => (
+        <li style={`--i:${i}`}>
+          <a href={link.href}>{link.label}</a>
+        </li>
+      ))
+    }
+  </ol>
+  <div class="aside">
+    <figure>
+      <ResponsivePicture image={blueAlien} widths={[320, 640]} sizes="(max-width: 700px) 112px, 400px" alt={MENU_COPY.image.alt} />
+    </figure>
+    <p>
+      <strong>{SITE.address.street}, {SITE.address.town}.</strong><br />{joinAsList(SITE.areas)}.
+    </p>
+    <p>{MENU_COPY.welcome}</p>
+  </div>
+</nav>
+
+<script>
+  import { initSiteMenu } from '@/scripts/features/site-menu';
+
+  initSiteMenu();
+</script>
+
+<style>
+  /* Fullscreen overlay under the header; :global(.menu-open) is set on <body>. */
+  .site-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 48px;
+    padding: calc(var(--nav-h) + 24px) var(--gutter) max(24px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    background: var(--tatami);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.35s, visibility 0s 0.35s;
+  }
+  :global(.menu-open) .site-menu {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+
+  .links {
+    align-self: center;
+    counter-reset: menu;
+  }
+  li {
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  a {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 0.06em 0 0.1em;
+    font: 900 clamp(3rem, 8.4vh, 5.75rem) / 1 var(--display);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transform: translateY(105%);
+    transition: transform 0.6s var(--ease-out), color 0.2s;
+  }
+  a::before {
+    counter-increment: menu;
+    content: '0' counter(menu);
+    font: 400 12px / 1 var(--mono);
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    transform: translateY(-1.6em);
+  }
+  a:hover { color: var(--green); }
+  :global(.menu-open) .site-menu a {
+    transform: none;
+    transition-delay: calc(0.06s + var(--i) * 0.04s);
+  }
+
+  .aside {
+    align-self: end;
+    justify-self: end;
+    display: grid;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    font-size: 15px;
+    color: var(--wall-dim);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s 0.3s, transform 0.6s 0.3s var(--ease-out);
+  }
+  :global(.menu-open) .site-menu .aside {
+    opacity: 1;
+    transform: none;
+  }
+  .aside :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+  .aside p {
+    margin: 0;
+    max-width: 36ch;
+  }
+  .aside strong {
+    color: var(--wall);
+    font-weight: 500;
+  }
+
+  @media (--upto-phone) {
+    .site-menu {
+      grid-template-columns: 1fr;
+      align-content: start;
+      gap: 28px;
+    }
+    a { font-size: clamp(2.75rem, 7vh, 3.5rem); }
+    .aside {
+      align-self: start;
+      justify-self: stretch;
+      grid-template-columns: 112px 1fr;
+      align-items: start;
+      gap: 8px 16px;
+      max-width: none;
+    }
+    .aside figure { grid-row: span 2; }
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import InstagramLink from '@/components/ui/InstagramLink.astro';
+import { FOOTER_COPY } from '@/config/copy';
+import { getDisciplines } from '@/lib/content';
+
+/** Each discipline with its teacher and their Instagram, laid on the footer's two-column subgrid. */
+const disciplines = await getDisciplines();
+---
+
+<ul role="list" class="teachers" aria-label={FOOTER_COPY.teachersLabel} data-dim-siblings>
+  {
+    disciplines.map(({ data, teacher }) => (
+      <li>
+        <span class="name">
+          <small>{data.title}</small>
+          {teacher.data.name}
+        </span>
+        <InstagramLink handle={teacher.data.instagram} owner={teacher.data.name} variant="bare" />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .teachers { row-gap: 14px; }
+  li { display: contents; }
+
+  .name {
+    font-size: 17px;
+    line-height: 1.35;
+  }
+  small {
+    display: block;
+    font: 400 11px / 1.6 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--wall-dim);
+  }
+
+  li > :global(.instagram) {
+    align-self: start;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--wall-dim);
+    overflow-wrap: anywhere;
+  }
+
+  /* Phones: the handle goes under the name, so long ones never break mid-word
+     (the footer drops the subgrid for this list). */
+  @media (--upto-phone) {
+    li {
+      display: flex;
+      flex-direction: column;
+    }
+    li + li { margin-top: 14px; }
+  }
+</style>

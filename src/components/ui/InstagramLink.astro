@@ -1,0 +1,61 @@
+---
+import { NEW_TAB_NOTE } from '@/config/copy';
+import { instagramUrl } from '@/config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  handle: string;
+  /** Whose account it is, for the accessible name. */
+  owner: string;
+  /**
+   * "tag" sits under a name, "inline" runs in a line of text, "bare" leaves
+   * its look to the parent.
+   */
+  variant?: 'tag' | 'inline' | 'bare';
+  /** The Instagram glyph before the handle; tags always carry it. */
+  icon?: boolean;
+}
+
+const { handle, owner, variant = 'tag', icon = variant === 'tag' } = Astro.props;
+---
+
+<a
+  class:list={['instagram', `instagram--${variant}`]}
+  href={instagramUrl(handle)}
+  target="_blank"
+  rel="noopener"
+  aria-label={`Instagram de ${owner}, @${handle} (${NEW_TAB_NOTE})`}
+>
+  {icon && <Icon name="instagram" class="instagram__icon" />}@{handle}
+</a>
+
+<style>
+  .instagram {
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .instagram:hover { color: var(--green); }
+
+  .instagram--tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    font: 400 12px / 1 var(--mono);
+    letter-spacing: 0.04em;
+    color: var(--wall-dim);
+  }
+  .instagram :global(.instagram__icon) {
+    width: 13px;
+    height: 13px;
+    flex: none;
+  }
+
+  .instagram--inline {
+    color: var(--wall);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .instagram--inline:hover { border-color: var(--green); }
+</style>

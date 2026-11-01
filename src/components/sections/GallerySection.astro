@@ -1,0 +1,83 @@
+---
+import CarouselControls from '@/components/gallery/CarouselControls.astro';
+import GalleryItem from '@/components/gallery/GalleryItem.astro';
+import GalleryMoreCard from '@/components/gallery/GalleryMoreCard.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionIntro from '@/components/layout/SectionIntro.astro';
+import { GALLERY_COPY } from '@/config/copy';
+import { getGalleryItems } from '@/lib/content';
+
+const HEADING_ID = 'galeria-heading';
+const items = await getGalleryItems();
+---
+
+<Section id="galeria" labelledBy={HEADING_ID}>
+  <SectionIntro headingId={HEADING_ID} heading={GALLERY_COPY.heading} lede={GALLERY_COPY.lede}>
+    <CarouselControls />
+  </SectionIntro>
+  <ul role="list" class="track" aria-label={GALLERY_COPY.listLabel} data-carousel>
+    {items.map((item) => <GalleryItem item={item} />)}
+    <GalleryMoreCard />
+  </ul>
+  <div class="progress" aria-hidden="true"><i data-carousel-progress></i></div>
+</Section>
+
+<script>
+  import { initGalleryCarousel } from '@/scripts/features/gallery-carousel';
+  import { initGalleryClips } from '@/scripts/features/gallery-clips';
+
+  initGalleryCarousel();
+  initGalleryClips();
+</script>
+
+<style>
+  /* After Venum: tall 4:5 frames in one row that bleeds to the screen edges,
+     the next one always peeking in. On desktop about 3.3 frames show, capped
+     so a frame always fits under the nav. No captions. */
+  .track {
+    --gap: clamp(12px, 1.2vw, 18px);
+    --card: min(
+      calc((100vw - 2 * var(--gutter) - 3 * var(--gap)) / 3.3),
+      calc((100svh - var(--nav-h-solid) - 72px) * 0.8)
+    );
+    display: flex;
+    gap: var(--gap);
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+
+  .track > :global(.gallery-card) {
+    position: relative;
+    flex: 0 0 var(--card);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    scroll-snap-align: start;
+    background: var(--tatami-2);
+  }
+
+  .progress {
+    height: 2px;
+    margin-top: 22px;
+    overflow: hidden;
+    background: var(--tatami-2);
+  }
+  .progress i {
+    display: block;
+    height: 100%;
+    background: var(--green);
+    transform: scaleX(var(--progress, 0.12));
+    transform-origin: 0 50%;
+    transition: transform 0.2s linear;
+  }
+  :global(html:not(.js)) .progress { display: none; }
+
+  @media (--upto-phone) {
+    .track { --card: min(78vw, 320px); }
+  }
+</style>

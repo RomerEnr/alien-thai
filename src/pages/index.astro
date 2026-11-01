@@ -1,0 +1,22 @@
+---
+import HeroPreload from '@/components/hero/HeroPreload.astro';
+import ContactSection from '@/components/sections/ContactSection.astro';
+import DisciplinesSection from '@/components/sections/DisciplinesSection.astro';
+import GallerySection from '@/components/sections/GallerySection.astro';
+import HeroSection from '@/components/sections/HeroSection.astro';
+import PricingSection from '@/components/sections/PricingSection.astro';
+import StorySection from '@/components/sections/StorySection.astro';
+import TeamSection from '@/components/sections/TeamSection.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <HeroPreload slot="head" />
+  <HeroSection />
+  <DisciplinesSection />
+  <PricingSection />
+  <StorySection />
+  <TeamSection />
+  <GallerySection />
+  <ContactSection />
+</BaseLayout>

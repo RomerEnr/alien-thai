@@ -1,0 +1,9 @@
+---
+interface Props {
+  target: string;
+}
+
+const { target } = Astro.props;
+---
+
+<a class="sr-only" href={`#${target}`}>Saltar al contenido</a>

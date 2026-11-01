@@ -1,0 +1,57 @@
+---
+import { Font } from 'astro:assets';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteMenu from '@/components/layout/SiteMenu.astro';
+import SkipLink from '@/components/layout/SkipLink.astro';
+import { SITE } from '@/config/site';
+import { publicUrl } from '@/lib/urls';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const MAIN_ID = 'main';
+const { title = SITE.title, description = SITE.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={SITE.themeColor} />
+    {!SITE.indexable && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={publicUrl('/favicon.svg')} />
+    <!-- Motion that hides content waits for this class, so without JS everything shows. -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" />
+    <slot name="head" />
+  </head>
+  <body>
+    <SkipLink target={MAIN_ID} />
+    <SiteHeader />
+    <SiteMenu />
+    <main id={MAIN_ID}>
+      <slot />
+    </main>
+    <SiteFooter />
+
+    <script>
+      import { initStaggeredReveal } from '@/scripts/features/staggered-reveal';
+
+      initStaggeredReveal();
+    </script>
+  </body>
+</html>

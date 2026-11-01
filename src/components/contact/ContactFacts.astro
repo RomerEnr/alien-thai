@@ -1,0 +1,50 @@
+---
+import InstagramLink from '@/components/ui/InstagramLink.astro';
+import PhoneNumber from '@/components/ui/PhoneNumber.astro';
+import { CONTACT_COPY } from '@/config/copy';
+import { SITE } from '@/config/site';
+
+const { street, postalCode, town, island } = SITE.address;
+const labels = CONTACT_COPY.facts;
+---
+
+<dl class="facts">
+  <dt>{labels.address}</dt>
+  <dd><address>{SITE.name}<br />{street}<br />{postalCode} {town}, {island}</address></dd>
+  <dt>{labels.phone}</dt>
+  <dd><PhoneNumber /></dd>
+  <dt>{labels.instagram}</dt>
+  <dd><InstagramLink handle={SITE.instagram} owner={SITE.name} variant="inline" /></dd>
+</dl>
+
+<style>
+  .facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin: 0;
+    border-top: 1px solid var(--line);
+  }
+  dt,
+  dd {
+    margin: 0;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  dt {
+    padding-right: 28px;
+    font: 400 11px / 1.9 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+  dd {
+    font-size: 18px;
+    line-height: 1.45;
+  }
+  address { font-style: normal; }
+  dd :global(.instagram--inline) { letter-spacing: 0; }
+
+  @media (--upto-phone) {
+    dd { font-size: 16px; }
+  }
+</style>

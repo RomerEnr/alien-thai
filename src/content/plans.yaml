@@ -1,0 +1,65 @@
+# Each tariff has its own 3D alien. Its clip starts and ends in the still's
+# pose; playbackRate, restMs and startAt give each fighter its own cadence.
+- id: monthly
+  name: Cuota mensual
+  order: 1
+  price: 60
+  per: al mes
+  featured: true
+  fighter:
+    src: ../assets/images/plans/elbow.png
+    alt: Alien verde lima de espaldas soltando un codo giratorio
+    focus: 50% 30%
+  clip: { src: /media/video/plan-elbow.mp4, playbackRate: 1, restMs: 700, startAt: 0 }
+
+- id: ten-class-pass
+  name: Bono 10 clases
+  order: 2
+  price: 75
+  per: el bono
+  specs:
+    - { label: Validez, value: 2 meses }
+    - { label: Por clase, value: '7,50 €' }
+  fighter:
+    src: ../assets/images/plans/knee.png
+    alt: Alien escamoso subiendo la rodilla en el clinch
+    focus: 50% 30%
+  clip: { src: /media/video/plan-knee.mp4, playbackRate: 1.15, restMs: 300, startAt: 0.55 }
+
+- id: five-class-pass
+  name: Bono 5 clases
+  order: 3
+  price: 40
+  per: el bono
+  specs:
+    - { label: Validez, value: 1 mes }
+    - { label: Por clase, value: '8 €' }
+  fighter:
+    src: ../assets/images/plans/kick.png
+    alt: Alien verde y morado lanzando una patada circular
+    focus: 40% 40%
+  clip: { src: /media/video/plan-kick.mp4, playbackRate: 1.05, restMs: 900, startAt: 0.2 }
+
+- id: drop-in
+  name: Clase suelta
+  order: 4
+  price: 10
+  per: por clase
+  fighter:
+    src: ../assets/images/plans/cross.png
+    alt: Alien gris azulado lanzando un directo hacia la cámara
+    focus: 50% 30%
+  clip: { src: /media/video/plan-cross.mp4, playbackRate: 1.25, restMs: 400, startAt: 0.75 }
+
+- id: private-class
+  name: Clase privada
+  order: 5
+  price: 30
+  per: por sesión
+  specs:
+    - { label: Formato, value: Uno a uno }
+  fighter:
+    src: ../assets/images/plans/pads.png
+    alt: Alien entrenador sujetando dos paos
+    focus: 50% 30%
+  clip: { src: /media/video/plan-pads.mp4, playbackRate: 0.95, restMs: 1100, startAt: 0.4 }

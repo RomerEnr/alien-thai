@@ -1,0 +1,58 @@
+---
+import ContactFacts from '@/components/contact/ContactFacts.astro';
+import ContactMap from '@/components/contact/ContactMap.astro';
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import SplitHeading from '@/components/ui/SplitHeading.astro';
+import { CONTACT_COPY } from '@/config/copy';
+import { SITE, directionsUrl, instagramUrl } from '@/config/site';
+
+/* After Fight Box: the map edge to edge, then the headline beside the details. No form. */
+const HEADING_ID = 'contacto-heading';
+---
+
+<Section id="contacto" labelledBy={HEADING_ID} variant="flush">
+  <ContactMap />
+  <div class="body">
+    <div>
+      <SplitHeading id={HEADING_ID} lines={CONTACT_COPY.heading} motion="scroll" class="display-heading" />
+      <p class="lede">{CONTACT_COPY.lede}</p>
+    </div>
+    <div>
+      <ContactFacts />
+      <div class="actions">
+        <Button href={directionsUrl()} external>{CONTACT_COPY.directions}</Button>
+        <Button href={instagramUrl(SITE.instagram)} variant="ghost" external>{CONTACT_COPY.writeUs}</Button>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: 32px clamp(32px, 6vw, 96px);
+    padding: clamp(48px, 6vw, 88px) var(--gutter) var(--section-space-lg);
+  }
+
+  .lede {
+    max-width: 30ch;
+    margin: 20px 0 0;
+    font-size: 17px;
+    color: var(--wall-dim);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  @media (--upto-phone) {
+    .body { grid-template-columns: 1fr; }
+    .lede { font-size: 16px; }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { GALLERY_COPY } from '@/config/copy';
+
+/** Previous and next for a sideways row (scripts/features/gallery-carousel.ts). Hidden without JS, where the row scrolls natively. */
+---
+
+<div class="controls" data-carousel-controls>
+  <button type="button" aria-label={GALLERY_COPY.previous} data-carousel-step="-1" disabled>
+    <Icon name="arrow-small-back" />
+  </button>
+  <button type="button" aria-label={GALLERY_COPY.next} data-carousel-step="1">
+    <Icon name="arrow-small" />
+  </button>
+</div>
+
+<style>
+  .controls {
+    display: flex;
+    gap: 10px;
+  }
+  :global(html:not(.js)) .controls { display: none; }
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgb(239 235 223 / 0.4);
+    border-radius: 50%;
+    background: none;
+    color: var(--wall);
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s, opacity 0.2s;
+  }
+  button:hover:not(:disabled) {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--tatami);
+  }
+  button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  button :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Phones swipe. */
+  @media (--upto-phone) {
+    .controls { display: none; }
+  }
+</style>

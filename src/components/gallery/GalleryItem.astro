@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+
+interface Props {
+  item: CollectionEntry<'gallery'>;
+}
+
+const STILL_WIDTHS = [432, 864];
+const STILL_SIZES = '(max-width: 700px) min(78vw, 320px), 30vw';
+
+const { still, alt, clip } = Astro.props.item.data;
+---
+
+<li class="gallery-card">
+  <figure data-gallery-clip={clip ? '' : undefined}>
+    <ResponsivePicture image={still} widths={STILL_WIDTHS} sizes={STILL_SIZES} alt={alt} />
+    {clip && <video muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true" data-src={clip} />}
+  </figure>
+</li>
+
+<style>
+  figure {
+    position: absolute;
+    inset: 0;
+  }
+  figure :global(img),
+  video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s var(--ease-out), opacity 0.4s;
+  }
+
+  /* The clip takes over from the still once it plays. */
+  video { opacity: 0; }
+  figure:global(.is-playing) video { opacity: 1; }
+
+  /* A faint inner rule keeps dark frames apart from the tatami. */
+  figure::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px rgb(239 235 223 / 0.06);
+    pointer-events: none;
+  }
+
+  @media (--can-hover) {
+    .gallery-card:hover figure :global(img),
+    .gallery-card:hover video { transform: scale(1.035); }
+  }
+</style>

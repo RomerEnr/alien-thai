@@ -1,0 +1,160 @@
+---
+import InfoStrip from '@/components/hero/InfoStrip.astro';
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import Button from '@/components/ui/Button.astro';
+import SplitHeading from '@/components/ui/SplitHeading.astro';
+import { HERO_COPY } from '@/config/copy';
+import { HERO_ART, HERO_SIZES } from '@/config/hero-art';
+import { CTA } from '@/config/site';
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <figure class="photo" data-hero-photo>
+    <ResponsivePicture art={HERO_ART} sizes={HERO_SIZES} alt={HERO_COPY.image.alt} priority />
+  </figure>
+
+  <div class="copy">
+    <SplitHeading as="h1" id="hero-heading" lines={HERO_COPY.heading} motion="entrance" class="hero-heading" />
+    <p class="lede"><b>{HERO_COPY.lede.lead}</b> {HERO_COPY.lede.body}</p>
+    <div class="actions">
+      <Button href={CTA.book.href}>{CTA.book.label}</Button>
+      <Button href={CTA.timetable.href} variant="ghost">{CTA.timetable.label}</Button>
+    </div>
+  </div>
+
+  <InfoStrip />
+</section>
+
+<script>
+  import { initHeroDriftFallback } from '@/scripts/features/hero-drift';
+  import { needsScrollTimelineFallback } from '@/scripts/lib/media';
+
+  if (needsScrollTimelineFallback()) initHeroDriftFallback();
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 100svh;
+    overflow: hidden;
+  }
+
+  /* Full-bleed mural. The image's own dark left third carries the copy; the
+     gradient only lifts the orange smudge behind the lede to AA, and fades out
+     before the fence so the mural keeps its colour. */
+  .photo {
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 var(--strip-h) 0;
+    overflow: hidden;
+  }
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 78% 42%;
+  }
+  .photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgb(var(--shade) / 0.78) 0%, rgb(var(--shade) / 0.5) 24%, rgb(var(--shade) / 0) 44%),
+      linear-gradient(180deg, rgb(var(--shade) / 0.55) 0%, rgb(var(--shade) / 0) 16%);
+  }
+
+  .copy {
+    align-self: center;
+    max-width: min(46vw, 640px);
+    padding: calc(var(--nav-h) + 24px) var(--gutter) 40px;
+  }
+
+  .copy :global(.hero-heading) {
+    --accent: var(--orange);
+    margin: 0;
+    font: 900 clamp(4.5rem, 9.6vw, 6rem) / 0.86 var(--display);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .lede {
+    max-width: 38ch;
+    margin: 24px 0 32px;
+    font-size: 19px;
+    line-height: 1.45;
+  }
+  .lede b { font-weight: 600; }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 16px;
+  }
+
+  /* Entrance (≤1.6s) */
+  :global(.js) .photo :global(img) { animation: settle 1.6s var(--ease-out) both; }
+  :global(.js) .lede,
+  :global(.js) .actions,
+  :global(.js) .hero > :global(.strip) { animation: fade-in 0.5s 0.6s ease both; }
+
+  @supports (animation-timeline: scroll()) {
+    @media (--motion-ok) {
+      .photo {
+        animation: drift linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 100vh;
+      }
+    }
+  }
+
+  /* Phones: the 9:16 cut is pinned to the top at full width. Its lower part
+     is already dark tatami, and any height left over is plain tatami, so the
+     copy sits on the floor below Mizzian's feet. The strip follows the first
+     screen. */
+  @media (--upto-phone) {
+    .hero {
+      grid-template-rows: 100svh auto;
+      min-height: 0;
+    }
+    .photo {
+      inset: 0 0 auto 0;
+      height: 100svh;
+      background: var(--tatami);
+    }
+    .photo :global(img) {
+      height: auto;
+      object-fit: initial;
+    }
+    .photo::after {
+      background:
+        linear-gradient(0deg, var(--tatami) 0%, var(--tatami) 30%, rgb(var(--shade) / 0.75) 44%, rgb(var(--shade) / 0) 58%),
+        linear-gradient(180deg, rgb(var(--shade) / 0.6) 0%, rgb(var(--shade) / 0) 18%);
+    }
+    .copy {
+      grid-row: 1;
+      align-self: end;
+      max-width: none;
+      padding-top: 0;
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    .copy :global(.hero-heading) { font-size: clamp(3.6rem, 18.5vw, 4.6rem); }
+    .lede {
+      margin: 14px 0 20px;
+      font-size: 16px;
+    }
+  }
+
+  /* Short phones: tighten the copy so it stays on the floor, below the feet. */
+  @media (--short-phone) {
+    .copy :global(.hero-heading) { font-size: clamp(3.2rem, 16vw, 4rem); }
+    .lede {
+      margin: 10px 0 16px;
+      font-size: 15px;
+    }
+    .actions { gap: 10px; }
+  }
+</style>

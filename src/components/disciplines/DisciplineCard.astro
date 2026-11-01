@@ -1,0 +1,122 @@
+---
+import { render } from 'astro:content';
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import InstagramLink from '@/components/ui/InstagramLink.astro';
+import ScheduleLabel from '@/components/ui/ScheduleLabel.astro';
+import TextLink from '@/components/ui/TextLink.astro';
+import { CTA } from '@/config/site';
+import type { DisciplineWithTeacher } from '@/lib/content';
+
+interface Props {
+  discipline: DisciplineWithTeacher;
+  /** Position in its row, for the staggered reveal. */
+  index: number;
+}
+
+const PHOTO_WIDTHS = [480, 800, 1200];
+const PHOTO_SIZES = '(max-width: 700px) min(82vw, 340px), 31vw';
+
+const { discipline, index } = Astro.props;
+const { title, photo, schedule, teacherTagline } = discipline.data;
+const teacher = discipline.teacher.data;
+const { Content } = await render(discipline);
+---
+
+<li class="card" style={`--i:${index}; --focus:${photo.focus}`}>
+  <figure data-reveal-media>
+    <ResponsivePicture image={photo.src} widths={PHOTO_WIDTHS} sizes={PHOTO_SIZES} alt={photo.alt} />
+  </figure>
+  <h3>{title}</h3>
+  <p class="teacher">
+    <span>{teacher.name} <span class="tagline">· {teacherTagline}</span></span>
+    <InstagramLink handle={teacher.instagram} owner={teacher.name} />
+  </p>
+  <div class="summary"><Content /></div>
+  <div class="meta">
+    <ScheduleLabel days={schedule.days} hours={schedule.hours} />
+    <TextLink href={CTA.timetable.href}>{CTA.timetable.label}</TextLink>
+  </div>
+</li>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The photo starts at 3:4 and, on short screens, crops towards square so
+     the whole card fits under the solid nav. --card-text is the measured
+     height of everything below the photo. */
+  figure {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    max-height: max(15rem, calc(100svh - var(--nav-h-solid) - var(--card-text) - 24px));
+    background: var(--tatami-2);
+  }
+  figure :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus);
+    filter: contrast(1.04);
+    transition: transform 0.9s var(--ease-out), filter 0.6s;
+  }
+  /* Green alien stroke: draws in under the photo on hover. */
+  figure::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s var(--ease-out);
+  }
+  .card:focus-within figure::after { transform: none; }
+  @media (--can-hover) {
+    .card:hover figure :global(img) { transform: scale(1.045); }
+    .card:hover figure::after { transform: none; }
+  }
+
+  h3 {
+    margin: 22px 0 0;
+    font: 900 clamp(2.5rem, 4.2vw, 3.6rem) / 0.9 var(--display);
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  .teacher {
+    display: grid;
+    justify-items: start;
+    gap: 2px;
+    margin: 10px 0 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .tagline {
+    font-weight: 400;
+    color: var(--wall-dim);
+  }
+
+  .summary :global(p) {
+    max-width: 40ch;
+    margin: 12px 0 0;
+    color: var(--wall-dim);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    margin-top: auto;
+    padding-top: 20px;
+  }
+
+  @media (--upto-phone) {
+    h3 { margin-top: 18px; }
+  }
+</style>

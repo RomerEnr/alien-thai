@@ -1,0 +1,40 @@
+---
+interface Props {
+  id: string;
+  labelledBy: string;
+  class?: string;
+  /**
+   * "opening" follows the hero: more air on top and under its intro, no rule.
+   * "immersive" drops its padding on tablets and phones, where its content
+   * fills the screen edge to edge. "flush" never has padding: its blocks set
+   * their own, so one of them can run edge to edge.
+   */
+  variant?: 'default' | 'opening' | 'immersive' | 'flush';
+}
+
+const { id, labelledBy, class: className, variant = 'default' } = Astro.props;
+---
+
+<section id={id} aria-labelledby={labelledBy} class:list={['section', `section--${variant}`, className]}>
+  <slot />
+</section>
+
+<style>
+  .section {
+    padding: var(--section-space) var(--gutter) var(--section-space-lg);
+    border-top: 1px solid var(--line);
+    scroll-margin-top: var(--nav-h-solid);
+  }
+
+  .section--opening {
+    --intro-space: clamp(40px, 5vw, 64px);
+    padding-block: var(--section-space-lg) var(--section-space);
+    border-top: 0;
+  }
+
+  .section--flush { padding: 0; }
+
+  @media (--upto-tablet) {
+    .section--immersive { padding: 0; }
+  }
+</style>

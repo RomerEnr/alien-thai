@@ -1,0 +1,64 @@
+---
+import { MENU_TOGGLE_COPY } from '@/config/copy';
+
+const { open, close } = MENU_TOGGLE_COPY;
+---
+
+<button
+  class="menu-toggle"
+  type="button"
+  aria-expanded="false"
+  aria-controls="site-menu"
+  data-menu-toggle
+  data-label-open={open.label}
+  data-label-close={close.label}
+  data-sr-open={open.srLabel}
+  data-sr-close={close.srLabel}
+>
+  <span class="burger" aria-hidden="true"></span>
+  <span class="label" data-menu-label aria-hidden="true">{open.label}</span>
+  <span class="sr-only" data-menu-sr-label>{open.srLabel}</span>
+</button>
+
+<style>
+  .menu-toggle {
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    background: none;
+    border: 0;
+    color: var(--wall);
+    cursor: pointer;
+    font: 500 12px / 1 var(--mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .burger {
+    position: relative;
+    width: 28px;
+    height: 12px;
+  }
+  .burger::before,
+  .burger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 0.45s var(--ease-out), width 0.45s var(--ease-out);
+  }
+  .burger::before { top: 0; width: 28px; }
+  .burger::after { bottom: 0; width: 18px; }
+
+  .menu-toggle:hover .burger::after { width: 28px; }
+
+  [aria-expanded='true'] .burger::before { transform: translateY(5.25px) rotate(45deg); }
+  [aria-expanded='true'] .burger::after { width: 28px; transform: translateY(-5.25px) rotate(-45deg); }
+
+  @media (--upto-phone) {
+    .label { display: none; }
+  }
+</style>

@@ -1,0 +1,11 @@
+/* Breakpoints. Keep in sync with src/config/media.ts, which scripts read. */
+@custom-media --upto-phone (max-width: 700px);
+@custom-media --upto-tablet (max-width: 860px);
+@custom-media --upto-laptop (max-width: 1100px);
+@custom-media --upto-desktop (max-width: 1400px);
+@custom-media --from-phone (min-width: 701px);
+@custom-media --from-laptop (min-width: 1101px);
+@custom-media --short-phone (max-width: 700px) and (max-height: 760px);
+@custom-media --can-hover (hover: hover);
+@custom-media --motion-ok (prefers-reduced-motion: no-preference);
+@custom-media --motion-reduced (prefers-reduced-motion: reduce);

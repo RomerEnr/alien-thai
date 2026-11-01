@@ -1,0 +1,104 @@
+---
+import AlienMark from '@/components/brand/AlienMark.astro';
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import { CONTACT_COPY } from '@/config/copy';
+import { MAP_ART, MAP_SIZES } from '@/config/map-art';
+
+const { alt, attribution } = CONTACT_COPY.map;
+---
+
+<figure class="map">
+  <ResponsivePicture art={MAP_ART} sizes={MAP_SIZES} alt={alt} />
+  <span class="pin" aria-hidden="true"><AlienMark /></span>
+  <small class="attribution">
+    © <a href={attribution.href} target="_blank" rel="noopener">{attribution.label}</a>
+    {attribution.suffix}
+  </small>
+</figure>
+
+<style>
+  /* Edge to edge, fading into the tatami above and below. */
+  .map {
+    position: relative;
+    height: clamp(260px, 50svh, 540px);
+    overflow: hidden;
+    background: var(--tatami);
+  }
+  .map :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .map::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      var(--tatami) 0%,
+      rgb(var(--shade) / 0) 18%,
+      rgb(var(--shade) / 0) 78%,
+      var(--tatami) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* The alien stands on the exact centre, with a green pulse at its feet. */
+  .pin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 44px;
+    transform: translate(-50%, -100%);
+    filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.6));
+  }
+  .pin :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pin::before,
+  .pin::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    border-radius: 50%;
+  }
+  .pin::before {
+    bottom: -7px;
+    width: 16px;
+    height: 6px;
+    margin-left: -8px;
+    background: var(--green);
+    opacity: 0.55;
+    filter: blur(1px);
+  }
+  .pin::after {
+    bottom: -14px;
+    width: 56px;
+    height: 20px;
+    margin-left: -28px;
+    border: 1.5px solid var(--green);
+    opacity: 0;
+    animation: ping 2.4s var(--ease-out) infinite;
+  }
+  @keyframes ping {
+    from { transform: scale(0.3); opacity: 0.8; }
+    to { transform: scale(1.4); opacity: 0; }
+  }
+
+  .attribution {
+    position: absolute;
+    right: 8px;
+    bottom: 6px;
+    z-index: 1;
+    font: 400 11px / 1.3 var(--mono);
+    color: var(--wall-dim);
+  }
+
+  @media (--upto-phone) {
+    .map { height: clamp(240px, 46svh, 400px); }
+    .pin { width: 38px; }
+  }
+</style>

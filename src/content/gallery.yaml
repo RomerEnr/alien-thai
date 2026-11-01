@@ -1,0 +1,63 @@
+# "Dentro del gym.": all from the gym's own Instagram, mostly Hecher Sosa's
+# seminar (reel DWjos6cDWP8). Students and Hecher appear: the gym must confirm
+# their permission before publishing. No names in the alts, since the footage
+# can't tell us for certain who is who. Clips: tools/encode-video.sh gallery.
+- id: guard
+  order: 1
+  still: ../assets/images/gallery/guard.webp
+  alt: Instructor con sudadera negra en guardia ante el grupo del seminario
+
+- id: room
+  order: 2
+  still: ../assets/images/gallery/room.webp
+  alt: Alumnos practicando por parejas en la sala durante el seminario
+  clip: /media/video/gallery-room.mp4
+
+- id: technique
+  order: 3
+  still: ../assets/images/gallery/technique.webp
+  alt: Instructor con camiseta amarilla enseñando una defensa a un alumno
+
+- id: bag
+  order: 4
+  still: ../assets/images/gallery/bag.webp
+  alt: Saco de boxeo negro colgado de sus cadenas
+
+- id: throw
+  order: 5
+  still: ../assets/images/gallery/throw.webp
+  alt: Demostración de una proyección sobre el tatami
+  clip: /media/video/gallery-throw.mp4
+
+- id: group
+  order: 6
+  still: ../assets/images/gallery/group.webp
+  alt: Instructor de espaldas explicando una técnica a los alumnos
+
+- id: kicks
+  order: 7
+  still: ../assets/images/gallery/kicks.webp
+  alt: Entreno de patadas al saco delante del mural del gimnasio
+  clip: /media/video/gallery-kicks.mp4
+
+- id: listening
+  order: 8
+  still: ../assets/images/gallery/listening.webp
+  alt: Alumnos escuchando de pie durante el seminario
+
+- id: talk
+  order: 9
+  still: ../assets/images/gallery/talk.webp
+  alt: Instructor hablando al grupo junto a los sacos
+  clip: /media/video/gallery-talk.mp4
+
+- id: mural
+  order: 10
+  still: ../assets/images/gallery/mural.webp
+  alt: Dos luchadores sonrientes posando ante el mural del alien
+
+- id: gloves
+  order: 11
+  still: ../assets/images/gallery/gloves.webp
+  alt: Entreno con guantes en la sala de sacos
+  clip: /media/video/gallery-gloves.mp4

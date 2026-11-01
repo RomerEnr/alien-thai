@@ -1,0 +1,10 @@
+---
+import { PLACEHOLDER_COPY } from '@/config/copy';
+import { SITE, telUrl } from '@/config/site';
+import Placeholder from './Placeholder.astro';
+
+/** The gym's phone as a tel: link, or a visible placeholder until it's confirmed. */
+const { phone } = SITE;
+---
+
+{phone ? <a class="phone" href={telUrl(phone)}>{phone}</a> : <Placeholder>{PLACEHOLDER_COPY.phone}</Placeholder>}

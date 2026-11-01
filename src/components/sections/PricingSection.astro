@@ -1,0 +1,46 @@
+---
+import Section from '@/components/layout/Section.astro';
+import SectionIntro from '@/components/layout/SectionIntro.astro';
+import PlanCard from '@/components/pricing/PlanCard.astro';
+import { PRICING_COPY } from '@/config/copy';
+import { getPlans } from '@/lib/content';
+
+const HEADING_ID = 'precios-heading';
+const plans = await getPlans();
+---
+
+<Section id="precios" labelledBy={HEADING_ID}>
+  <SectionIntro headingId={HEADING_ID} heading={PRICING_COPY.heading} lede={PRICING_COPY.lede} />
+  <ul role="list" class="rail list" data-rail="laptop" data-reveal data-plan-clips>
+    {plans.map((plan, index) => <PlanCard plan={plan} index={index} />)}
+  </ul>
+</Section>
+
+<script>
+  import { initPlanClips } from '@/scripts/features/plan-clips';
+
+  initPlanClips();
+</script>
+
+<style>
+  .list {
+    --rail-item: min(70vw, 300px);
+    --reveal-step: 0.12s;
+    --card-text: 200px;
+  }
+
+  /* Desktop: one row of five. */
+  @media (--from-laptop) {
+    .list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--card-gap);
+    }
+  }
+  @media (--upto-phone) {
+    .list {
+      --rail-item: min(78vw, 320px);
+      --card-text: 180px;
+    }
+  }
+</style>

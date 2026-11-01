@@ -1,0 +1,185 @@
+---
+import Wordmark from '@/components/brand/Wordmark.astro';
+import FooterTeachers from '@/components/footer/FooterTeachers.astro';
+import InstagramLink from '@/components/ui/InstagramLink.astro';
+import PhoneNumber from '@/components/ui/PhoneNumber.astro';
+import { FOOTER_COPY } from '@/config/copy';
+import { CREDIT, FOOTER_LINKS, LEGAL_PAGES, SITE } from '@/config/site';
+
+/*
+ * After Richard Mille: a quiet breadcrumb over a hairline, then three columns:
+ * the logo alone, the sections in big uppercase, and a dense two-column grid of
+ * lighter links cut by hairlines. The © line and the credit close it. Hovering
+ * a list dims its siblings, slowly. No form: Instagram takes the newsletter's place.
+ */
+const year = new Date().getFullYear();
+const { street, postalCode, town, island } = SITE.address;
+---
+
+<footer class="site-footer" data-menu-inert>
+  <p class="crumb">{SITE.name}<i aria-hidden="true">•</i>{town}</p>
+
+  <div class="grid">
+    <Wordmark label={FOOTER_COPY.homeLabel} />
+
+    <nav aria-label={FOOTER_COPY.sectionsLabel}>
+      <ul role="list" class="sections" data-dim-siblings>
+        {FOOTER_LINKS.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="side">
+      <FooterTeachers />
+      <div class="follow">
+        <p>{FOOTER_COPY.follow}</p>
+        <InstagramLink handle={SITE.instagram} owner={SITE.name} variant="bare" icon />
+      </div>
+      <div class="contact">
+        <div>
+          <p class="contact-title">{FOOTER_COPY.contact}</p>
+          <address><p>{street}<br />{postalCode} {town}</p></address>
+          <p><PhoneNumber /></p>
+        </div>
+        <ul role="list" class="legal" aria-label={FOOTER_COPY.legalLabel}>
+          {LEGAL_PAGES.map((page) => <li>{page}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="base">
+    <p>© {year} {SITE.name} · {town}, {island}</p>
+    <p>{FOOTER_COPY.credit} <a href={CREDIT.href} target="_blank" rel="noopener">{CREDIT.label}</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: 20px var(--gutter) max(28px, env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--tatami);
+  }
+  .site-footer :global(a) {
+    text-decoration: none;
+    transition: opacity 0.6s ease, color 0.3s;
+  }
+  p { margin: 0; }
+
+  .crumb {
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    font: 400 11px / 1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wall-dim);
+    opacity: 0.7;
+  }
+  .crumb i {
+    margin: 0 0.9em;
+    font-style: normal;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px clamp(24px, 3vw, 48px);
+    padding: clamp(28px, 3vw, 40px) 0 clamp(64px, 8vw, 104px);
+  }
+  .grid > :global(.wordmark) {
+    --wordmark-size: clamp(26px, 2.2vw, 32px);
+    justify-self: start;
+    align-self: start;
+  }
+
+  .sections li + li { margin-top: 0.42em; }
+  .sections a {
+    font: 800 clamp(1.6rem, 2.1vw, 2.05rem) / 1 var(--display);
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+  }
+
+  /* Each block spans both columns and lays its own content on them. */
+  .side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    column-gap: clamp(16px, 2vw, 28px);
+  }
+  .side > :global(*) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .side > :global(:first-child) {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .side > :global(:last-child) { padding-bottom: 0; }
+
+  .follow { align-items: center; }
+  .follow p,
+  .contact p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--wall-dim);
+  }
+  .follow :global(.instagram) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+  }
+  .follow :global(.instagram__icon) {
+    width: 16px;
+    height: 16px;
+    flex: none;
+  }
+  .contact address { font-style: normal; }
+  .contact .contact-title { color: var(--wall); }
+
+  .legal li {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--wall-dim);
+    opacity: 0.7;
+  }
+
+  /* Hovering a list dims the rest of it; the link under the pointer lights up. */
+  @media (--can-hover) {
+    .site-footer :global([data-dim-siblings]:hover a) { opacity: 0.4; }
+    .site-footer :global([data-dim-siblings] a:hover) { opacity: 1; }
+    .site-footer :global(a:hover) { color: var(--green); }
+  }
+
+  .base {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px 24px;
+    font-size: 15px;
+    color: var(--wall-dim);
+  }
+  .base a {
+    color: var(--wall);
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (--upto-laptop) {
+    .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+    .grid > :global(.wordmark) { grid-column: 1 / -1; }
+  }
+
+  @media (--upto-phone) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .sections a { font-size: 2rem; }
+    .side > :global(*) { padding: 18px 0; }
+    .side > :global(.teachers) { display: block; }
+    .base { flex-direction: column; }
+  }
+</style>

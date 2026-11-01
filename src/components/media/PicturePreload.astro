@@ -1,0 +1,20 @@
+---
+import type { ArtDirection } from '@/lib/art-direction';
+import { FORMATS, buildSource } from '@/lib/images';
+
+interface Props {
+  art: readonly ArtDirection[];
+  sizes: string;
+}
+
+/** Preloads the first format of each crop, matching the <picture> that will use it. */
+const { art, sizes } = Astro.props;
+const preferred = FORMATS[0];
+const sources = await Promise.all(art.map((crop) => buildSource(crop.image, crop.widths, preferred, crop.media)));
+---
+
+{
+  sources.map((s) => (
+    <link rel="preload" as="image" type={s.type} imagesrcset={s.srcset} imagesizes={sizes} media={s.media} fetchpriority="high" />
+  ))
+}

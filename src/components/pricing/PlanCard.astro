@@ -1,0 +1,150 @@
+---
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import { SITE } from '@/config/site';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  plan: CollectionEntry<'plans'>;
+  /** Position in its row, for the staggered reveal. */
+  index: number;
+}
+
+const FIGHTER_WIDTHS = [480, 800];
+const FIGHTER_SIZES = '(max-width: 700px) min(78vw, 320px), (max-width: 1100px) min(70vw, 300px), 19vw';
+
+const { plan, index } = Astro.props;
+const { name, price, per, featured, specs, fighter, clip } = plan.data;
+---
+
+<li class:list={['plan', { 'plan--featured': featured }]} style={`--i:${index}; --focus:${fighter.focus}`}>
+  <figure data-reveal-media data-plan-clip>
+    <ResponsivePicture image={fighter.src} widths={FIGHTER_WIDTHS} sizes={FIGHTER_SIZES} alt={fighter.alt} />
+    <video
+      muted
+      playsinline
+      preload="none"
+      disablepictureinpicture
+      aria-hidden="true"
+      data-src={clip.src}
+      data-playback-rate={clip.playbackRate}
+      data-rest-ms={clip.restMs}
+      data-start-at={clip.startAt}></video>
+  </figure>
+  <h3>{name}</h3>
+  <p class="price"><b>{price}<small>{SITE.currency}</small></b><span>{per}</span></p>
+  {
+    specs.length > 0 && (
+      <dl class="specs">
+        {specs.map(({ label, value }) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    )
+  }
+</li>
+
+<style>
+  .plan {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* The render's black studio fades into the tatami through the mask, and
+     lighten turns that studio black (a shade darker than the tatami) into
+     the tatami itself, so no rectangle shows. */
+  figure {
+    --fade-y: linear-gradient(180deg, transparent 0, #000 8%, #000 74%, transparent 100%);
+    --fade-x: linear-gradient(90deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    max-height: max(13rem, calc(100svh - var(--nav-h-solid) - var(--card-text) - 24px));
+    background: var(--tatami);
+    -webkit-mask-image: var(--fade-y), var(--fade-x);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade-y), var(--fade-x);
+    mask-composite: intersect;
+  }
+  figure :global(img),
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus);
+    mix-blend-mode: lighten;
+    transition: opacity 0.3s, transform 0.9s var(--ease-out);
+  }
+
+  /* The clip takes over from the still once its first frame has painted. */
+  video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+  figure:global(.is-playing) video { opacity: 1; }
+  figure:global(.is-playing) :global(img) { opacity: 0; }
+
+  @media (--can-hover) {
+    .plan:hover figure :global(img),
+    .plan:hover video { transform: scale(1.045); }
+  }
+
+  h3 {
+    margin: 4px 0 0;
+    font: 900 clamp(1.7rem, 2.3vw, 2.25rem) / 0.95 var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 14px 0 0;
+  }
+  .price b {
+    font: 900 clamp(3.4rem, 4.6vw, 4.4rem) / 0.8 var(--display);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .plan--featured .price b { color: var(--green); }
+  .price small {
+    margin-left: 0.08em;
+    font-size: 0.5em;
+  }
+  .price span {
+    font: 400 12px / 1.2 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wall-dim);
+  }
+
+  .specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin: 16px 0 0;
+  }
+  .specs div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 4px;
+  }
+  dd {
+    margin: 0;
+    font: 800 1.5rem / 1 var(--display);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  dt {
+    font: 400 11px / 1.2 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+</style>

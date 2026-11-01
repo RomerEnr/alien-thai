@@ -1,0 +1,68 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--green) var(--tatami);
+}
+
+body {
+  margin: 0;
+  background: var(--tatami);
+  color: var(--wall);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--green);
+  color: var(--tatami);
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--tatami); }
+::-webkit-scrollbar-thumb { background: var(--green); }
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+a { color: inherit; }
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+figure { margin: 0; }
+
+q { quotes: "«" "»"; }
+
+/* Lowest specificity, so layout utilities such as .rail can pad a list. */
+:where(ul, ol)[role="list"] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Section headings share one display style; each section sets only its accent. */
+.display-heading {
+  margin: 0;
+  font: 900 clamp(3.25rem, 7.4vw, 6rem) / 0.86 var(--display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Small uppercase labels in the mono face. */
+.eyebrow {
+  font: 400 11px / 1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

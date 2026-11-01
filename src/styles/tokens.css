@@ -1,0 +1,37 @@
+/* Palette: k-means over reel 02 frames (mural + tatami). */
+:root {
+  color-scheme: dark;
+
+  --tatami: #0f100a;   /* oklch(.17 .012 121) black tatami */
+  --tatami-2: #191c13; /* oklch(.22 .018 121) */
+  --wall: #efebdf;     /* oklch(.94 .016 90) mural wall */
+  --wall-dim: #afab9d; /* oklch(.74 .02 95) */
+  --line: rgb(239 235 223 / 0.16);
+  --green: #abd64d;    /* oklch(.82 .17 125) green alien, brand */
+  --orange: #f3821d;   /* oklch(.72 .17 55) explosion */
+  --teal: #5eb6b2;     /* oklch(.72 .085 192) teal alien */
+  --shade: 15 16 10;   /* --tatami as RGB channels, for washes: rgb(var(--shade) / .5) */
+
+  --display: var(--font-display);
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
+
+  --gutter: max(16px, env(safe-area-inset-left), env(safe-area-inset-right));
+  --nav-h: 88px;
+  --nav-h-solid: 64px;
+  --strip-h: 52px;
+
+  --section-space: clamp(72px, 9vw, 128px);
+  --section-space-lg: clamp(88px, 11vw, 152px);
+  --card-gap: clamp(14px, 1.6vw, 24px);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (--upto-phone) {
+  :root {
+    --nav-h: 64px;
+    --nav-h-solid: 56px;
+    --strip-h: auto;
+  }
+}

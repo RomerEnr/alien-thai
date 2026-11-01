@@ -1,0 +1,59 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ───────── RAIL ─────────
+   A grid of cards that becomes a swipeable, snapping row below its
+   breakpoint (data-rail="phone" or "laptop"), with the next card peeking in.
+   The row bleeds to the screen edges. Cards set their width with --rail-item. */
+.rail {
+  --rail-item: min(78vw, 320px);
+  --rail-gap: 16px;
+}
+
+@media (--upto-laptop) {
+  .rail:where([data-rail="laptop"]) {
+    display: flex;
+    gap: var(--rail-gap);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) var(--tatami-2);
+  }
+  .rail:where([data-rail="laptop"]) > * {
+    flex: 0 0 var(--rail-item);
+    scroll-snap-align: start;
+  }
+}
+
+@media (--upto-phone) {
+  .rail:where([data-rail="phone"]) {
+    display: flex;
+    gap: var(--rail-gap);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) 18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) var(--tatami-2);
+  }
+  .rail:where([data-rail="phone"]) > * {
+    flex: 0 0 var(--rail-item);
+    scroll-snap-align: start;
+  }
+}
+
+.rail::-webkit-scrollbar { height: 3px; }
+.rail::-webkit-scrollbar-thumb { background: var(--green); }
+.rail::-webkit-scrollbar-track { background: var(--tatami-2); }

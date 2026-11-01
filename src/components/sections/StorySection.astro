@@ -1,0 +1,106 @@
+---
+import Section from '@/components/layout/Section.astro';
+import StoryChapter from '@/components/story/StoryChapter.astro';
+import StoryFilm from '@/components/story/StoryFilm.astro';
+import SplitHeading from '@/components/ui/SplitHeading.astro';
+import { STORY_COPY } from '@/config/copy';
+import { getStoryChapters } from '@/lib/content';
+
+const HEADING_ID = 'historia-heading';
+const chapters = await getStoryChapters();
+---
+
+<Section id="historia" labelledBy={HEADING_ID} variant="immersive">
+  <div class="grid" data-story>
+    <StoryFilm />
+    <div class="copy">
+      <SplitHeading id={HEADING_ID} lines={STORY_COPY.heading} motion="scroll" class="display-heading story-heading" />
+      <ol role="list" class="chapters">
+        {chapters.map((chapter) => <StoryChapter chapter={chapter} />)}
+      </ol>
+      <blockquote class="closing">
+        <p>«{STORY_COPY.closing.quote}»</p>
+        <footer>{STORY_COPY.closing.attribution}</footer>
+      </blockquote>
+    </div>
+  </div>
+</Section>
+
+<script>
+  import { initStoryChapters } from '@/scripts/features/story-chapters';
+  import { initStoryScrub } from '@/scripts/features/story-scrub';
+
+  initStoryScrub();
+  initStoryChapters();
+</script>
+
+<style>
+  /* A pinned film on the left, the story on the right, a 3D Thai numeral
+     for each chapter. */
+  .grid {
+    --numeral-col: clamp(44px, 4.4vw, 68px);
+    --numeral-gap: clamp(14px, 1.8vw, 28px);
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: start;
+    gap: clamp(32px, 5vw, 96px);
+  }
+
+  .copy :global(.story-heading) { margin-bottom: clamp(48px, 8vh, 96px); }
+
+  .chapters {
+    display: grid;
+    gap: clamp(56px, 14vh, 150px);
+  }
+
+  .closing {
+    margin: clamp(72px, 14vh, 150px) 0 0;
+    padding-left: calc(var(--numeral-col) + var(--numeral-gap));
+  }
+  .closing p {
+    max-width: 22ch;
+    margin: 0;
+    font: 800 clamp(1.8rem, 3vw, 2.6rem) / 1.05 var(--display);
+    color: var(--green);
+  }
+  .closing footer {
+    margin-top: 18px;
+    font: 400 11px / 1.3 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wall-dim);
+  }
+
+  /* Tablets and phones: the film fills the screen behind the story and the
+     chapters pass over it one screen at a time; the closing line gets a
+     screen of its own. Text is never hidden: if the script or the clip
+     fails, the poster stays and everything still reads. */
+  @media (--upto-tablet) {
+    .grid { display: block; }
+    .copy {
+      position: relative;
+      z-index: 1;
+      padding: 0 var(--gutter);
+      text-shadow: 0 1px 16px rgb(var(--shade) / 0.7);
+    }
+    .copy :global(.story-heading) {
+      margin: 0;
+      padding: 62svh 0 38svh;
+      font-size: clamp(3.5rem, 17vw, 5.5rem);
+    }
+    .chapters { gap: 0; }
+    .closing {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100svh;
+      margin: 0 calc(var(--gutter) * -1);
+      padding: 0 var(--gutter) 10svh;
+      background: linear-gradient(180deg, rgb(var(--shade) / 0), rgb(var(--shade) / 0.82) 35%);
+    }
+    .closing p {
+      max-width: 12ch;
+      font-size: clamp(2.4rem, 11vw, 3.4rem);
+    }
+  }
+</style>

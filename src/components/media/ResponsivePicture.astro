@@ -1,0 +1,38 @@
+---
+import type { ImageMetadata } from 'astro';
+import type { ArtDirection, Crop } from '@/lib/art-direction';
+import { buildFallback, buildSources } from '@/lib/images';
+
+type Props = {
+  alt: string;
+  sizes: string;
+  class?: string;
+  /** Above-the-fold images load eagerly and first. */
+  priority?: boolean;
+} & ({ image: ImageMetadata; widths: readonly number[]; art?: never } | { art: readonly ArtDirection[]; image?: never; widths?: never });
+
+const { alt, sizes, class: className, priority = false } = Astro.props;
+
+/** Every crop as { media, image, widths }; a single image is one crop with no media. */
+const crops: readonly Crop[] = Astro.props.art ?? [
+  { image: Astro.props.image, widths: Astro.props.widths },
+];
+
+const sources = (await Promise.all(crops.map((c) => buildSources(c.image, c.widths, c.media)))).flat();
+const lastCrop = crops[crops.length - 1];
+const fallback = await buildFallback(lastCrop.image, lastCrop.widths);
+---
+
+<picture>
+  {sources.map((s) => <source type={s.type} media={s.media} srcset={s.srcset} sizes={sizes} width={s.width} height={s.height} />)}
+  <img
+    class={className}
+    src={fallback.src}
+    width={fallback.width}
+    height={fallback.height}
+    alt={alt}
+    loading={priority ? 'eager' : 'lazy'}
+    decoding={priority ? 'auto' : 'async'}
+    fetchpriority={priority ? 'high' : undefined}
+  />
+</picture>

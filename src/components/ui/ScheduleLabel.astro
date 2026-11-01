@@ -1,0 +1,39 @@
+---
+import { PLACEHOLDER_COPY } from '@/config/copy';
+import { joinWithDots } from '@/lib/text';
+import Placeholder from './Placeholder.astro';
+
+interface Props {
+  days?: readonly string[];
+  hours?: readonly string[];
+}
+
+const { days, hours } = Astro.props;
+---
+
+<span class="schedule">
+  {
+    days ? (
+      <>
+        <b>{joinWithDots(days)}</b>
+        {hours ? joinWithDots(hours) : <Placeholder>{PLACEHOLDER_COPY.hours}</Placeholder>}
+      </>
+    ) : (
+      <Placeholder>{PLACEHOLDER_COPY.days}</Placeholder>
+    )
+  }
+</span>
+
+<style>
+  .schedule {
+    font: 400 12px / 1.4 var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--wall);
+  }
+  b {
+    font-weight: 500;
+    color: var(--teal);
+    margin-right: 0.6em;
+  }
+</style>

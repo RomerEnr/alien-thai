@@ -1,0 +1,89 @@
+---
+import ResponsivePicture from '@/components/media/ResponsivePicture.astro';
+import { STORY_FILM, STORY_FILM_ART, STORY_FILM_SIZES } from '@/config/story-film';
+---
+
+<div class="film" aria-hidden="true" data-story-film>
+  <ResponsivePicture art={STORY_FILM_ART} sizes={STORY_FILM_SIZES} alt="" />
+  <video
+    muted
+    playsinline
+    preload="none"
+    disablepictureinpicture
+    data-src-landscape={STORY_FILM.clips.landscape}
+    data-src-portrait={STORY_FILM.clips.portrait}
+    data-cut-at={STORY_FILM.cutAt}></video>
+  <span class="progress"><i data-story-progress></i></span>
+</div>
+
+<style>
+  .film {
+    position: sticky;
+    top: calc(var(--nav-h-solid) + 24px);
+    height: calc(100svh - var(--nav-h-solid) - 48px);
+    max-height: 860px;
+    overflow: hidden;
+    background: var(--tatami-2);
+  }
+  .film :global(img),
+  video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 35%;
+  }
+  video {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .film:global(.is-ready) video { opacity: 1; }
+
+  .film::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, rgb(var(--shade) / 0) 55%, rgb(var(--shade) / 0.5)),
+      linear-gradient(0deg, rgb(var(--shade) / 0.45), rgb(var(--shade) / 0) 30%);
+  }
+
+  .progress { display: none; }
+
+  /* Tablets and phones: the vertical cut fills the screen behind the story
+     (100lvh, so the toolbar hiding never resizes it) and pulls the copy up
+     over itself. A thin bar under the nav shows how far the film has run. */
+  @media (--upto-tablet) {
+    .film {
+      top: 0;
+      z-index: 0;
+      height: 100lvh;
+      max-height: none;
+      margin-bottom: -100lvh;
+    }
+    .film :global(img),
+    video { object-position: 50% 50%; }
+    .film::after {
+      background:
+        linear-gradient(0deg, rgb(var(--shade) / 0.92) 0%, rgb(var(--shade) / 0.72) 30%, rgb(var(--shade) / 0) 62%),
+        linear-gradient(180deg, rgb(var(--shade) / 0.6) 0%, rgb(var(--shade) / 0) 22%);
+    }
+    .progress {
+      display: block;
+      position: absolute;
+      z-index: 1;
+      inset: calc(var(--nav-h-solid) + 12px) var(--gutter) auto;
+      height: 2px;
+      background: rgb(239 235 223 / 0.18);
+    }
+    .progress i {
+      display: block;
+      height: 100%;
+      background: var(--green);
+      transform: scaleX(var(--progress, 0));
+      transform-origin: 0 50%;
+    }
+  }
+</style>

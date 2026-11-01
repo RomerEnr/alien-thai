@@ -1,0 +1,66 @@
+---
+import AlienMark from '@/components/brand/AlienMark.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { GALLERY_COPY, NEW_TAB_NOTE } from '@/config/copy';
+import { SITE, instagramUrl } from '@/config/site';
+
+const [firstLine, secondLine] = GALLERY_COPY.more.title;
+---
+
+<li class="gallery-card">
+  <a
+    href={instagramUrl(SITE.instagram)}
+    target="_blank"
+    rel="noopener"
+    aria-label={`${firstLine} el Instagram de ${SITE.name}, @${SITE.instagram} (${NEW_TAB_NOTE})`}
+  >
+    <AlienMark class="mark" />
+    <div>
+      <b>{firstLine}<br />{secondLine}</b>
+      <span>@{SITE.instagram} <Icon name="arrow-small" class="arrow" /></span>
+    </div>
+  </a>
+</li>
+
+<style>
+  a {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(20px, 2vw, 28px);
+    color: var(--wall);
+    text-decoration: none;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgb(171 214 77 / 0.14), rgb(171 214 77 / 0) 60%),
+      var(--tatami-2);
+  }
+
+  a :global(.mark) {
+    width: clamp(56px, 5vw, 72px);
+    height: auto;
+  }
+
+  b {
+    display: block;
+    font: 900 clamp(2.4rem, 3.4vw, 3.2rem) / 0.9 var(--display);
+    text-transform: uppercase;
+  }
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+    font: 400 13px / 1 var(--mono);
+    letter-spacing: 0.04em;
+    color: var(--green);
+  }
+  span :global(.arrow) {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  a:hover span :global(.arrow) { transform: translateX(4px); }
+</style>

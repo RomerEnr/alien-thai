@@ -1,0 +1,70 @@
+---
+import type { HTMLTag } from 'astro/types';
+import { splitTrailingMark } from '@/lib/text';
+
+interface Props {
+  lines: readonly string[];
+  as?: Extract<HTMLTag, 'h1' | 'h2' | 'h3'>;
+  id?: string;
+  class?: string;
+  /**
+   * How the lines rise out of their masks: "entrance" once on load, "scroll"
+   * tied to the heading's pass through the viewport.
+   */
+  motion: 'entrance' | 'scroll';
+}
+
+const { lines, as: Tag = 'h2', id, class: className, motion } = Astro.props;
+---
+
+<Tag id={id} class:list={['split-heading', className]} data-split-heading={motion}>
+  {
+    lines.map((line, i) => {
+      const { text, mark } = splitTrailingMark(line);
+      return (
+        <span class="line" style={`--i:${i}`}>
+          {/* One line: any whitespace would put a gap before the mark. */}
+          <span>{text}{mark && <em>{mark}</em>}</span>
+        </span>
+      );
+    })
+  }
+</Tag>
+
+<script>
+  import { needsScrollTimelineFallback } from '@/scripts/lib/media';
+  import { initHeadingRiseFallback } from '@/scripts/features/heading-rise';
+
+  if (needsScrollTimelineFallback()) initHeadingRiseFallback();
+</script>
+
+<style>
+  /* The mask leaves room above for accents (DÓNDE) and below for descenders. */
+  .line {
+    display: block;
+    overflow: hidden;
+    padding: 0.14em 0 0.06em;
+    margin: -0.14em 0 -0.06em;
+  }
+  .line > span { display: inline-block; }
+
+  em {
+    font-style: normal;
+    color: var(--accent, var(--green));
+  }
+
+  :global(.js) [data-split-heading='entrance'] .line > span {
+    animation: line-up 0.65s var(--ease-out) calc(0.25s + var(--i) * 0.1s) both;
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (--motion-ok) {
+      [data-split-heading='scroll'] { view-timeline: --heading block; }
+      [data-split-heading='scroll'] .line > span {
+        animation: rise linear both;
+        animation-timeline: --heading;
+        animation-range: cover calc(var(--i) * 8%) cover calc(30% + var(--i) * 8%);
+      }
+    }
+  }
+</style>
