@@ -3,6 +3,7 @@ import DisciplineCard from '@/components/disciplines/DisciplineCard.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionIntro from '@/components/layout/SectionIntro.astro';
 import { DISCIPLINES_COPY } from '@/config/copy';
+import { TIMETABLES_ID } from '@/config/site';
 import { getDisciplines } from '@/lib/content';
 
 const HEADING_ID = 'clases-heading';
@@ -11,7 +12,7 @@ const disciplines = await getDisciplines();
 
 <Section id="clases" labelledBy={HEADING_ID} variant="opening">
   <SectionIntro headingId={HEADING_ID} heading={DISCIPLINES_COPY.heading} lede={DISCIPLINES_COPY.lede} />
-  <ul role="list" class="rail list" data-rail="phone" data-reveal>
+  <ul id={TIMETABLES_ID} role="list" class="rail list" data-rail="phone" data-reveal>
     {disciplines.map((discipline, index) => <DisciplineCard discipline={discipline} index={index} />)}
   </ul>
 </Section>
@@ -21,6 +22,8 @@ const disciplines = await getDisciplines();
     --rail-item: min(82vw, 340px);
     --rail-gap: 14px;
     --card-text: 312px;
+    /* Each card is at most 100svh - nav - 24px tall: split the slack evenly. */
+    scroll-margin-top: calc(var(--nav-h-solid) + 12px);
   }
 
   /* Above phones the rail is a plain three-column grid. */

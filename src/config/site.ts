@@ -17,7 +17,12 @@ export const SITE = {
   /** The discipline whose timetable the hero strip summarises. */
   headlineDiscipline: 'muay-thai',
   currency: '€',
+  /** Umami Cloud website ID; analytics load only once it is set. */
+  umamiWebsiteId: null as string | null,
 } as const;
+
+/** The discipline cards, framed whole with their timetables under the solid nav. */
+export const TIMETABLES_ID = 'horarios';
 
 /** Until a Horarios section exists, the timetable and booking links lead to Contacto. */
 const TIMETABLE_HREF = '#contacto';
@@ -26,6 +31,8 @@ export const CTA = {
   trialClass: { label: 'Clase de prueba', href: '#contacto' },
   book: { label: 'Reserva tu clase de prueba', href: '#contacto' },
   timetable: { label: 'Ver horarios', href: TIMETABLE_HREF },
+  /** The hero's jump to the timetables on the discipline cards. */
+  timetables: { label: 'Ver horarios', href: `#${TIMETABLES_ID}` },
 } as const;
 
 /** The page's sections, in page order: each href is a section id. */

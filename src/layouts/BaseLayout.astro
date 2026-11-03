@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import Analytics from '@/components/layout/Analytics.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteMenu from '@/components/layout/SiteMenu.astro';
@@ -34,6 +35,7 @@ const { title = SITE.title, description = SITE.description } = Astro.props;
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" />
+    <Analytics />
     <slot name="head" />
   </head>
   <body>

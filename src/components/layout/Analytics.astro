@@ -1,0 +1,9 @@
+---
+import { SITE } from '@/config/site';
+
+/** Umami Cloud: cookieless, so it needs no consent banner. */
+const UMAMI_SRC = 'https://cloud.umami.is/script.js';
+const websiteId = SITE.umamiWebsiteId;
+---
+
+{websiteId && <script is:inline defer src={UMAMI_SRC} data-website-id={websiteId} />}
