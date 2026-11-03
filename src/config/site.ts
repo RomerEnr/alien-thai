@@ -18,7 +18,7 @@ export const SITE = {
   headlineDiscipline: 'muay-thai',
   currency: '€',
   /** Umami Cloud website ID; analytics load only once it is set. */
-  umamiWebsiteId: null as string | null,
+  umamiWebsiteId: 'ec6a5f3a-6e2c-424a-bbb9-864ef78ec30f' as string | null,
 } as const;
 
 /** The discipline cards, framed whole with their timetables under the solid nav. */
