@@ -1,0 +1,1 @@
+var e={uptoPhone:`(max-width: 700px)`,fromPhone:`(min-width: 701px)`,uptoTablet:`(max-width: 860px)`,fromLaptop:`(min-width: 1101px)`,reducedMotion:`(prefers-reduced-motion: reduce)`,stillClips:`(max-width: 860px), (pointer: coarse)`},t=e=>matchMedia(e).matches,n=()=>t(e.reducedMotion),r=()=>!CSS.supports(`animation-timeline: view()`)&&!n();export{e as i,r as n,n as r,t};

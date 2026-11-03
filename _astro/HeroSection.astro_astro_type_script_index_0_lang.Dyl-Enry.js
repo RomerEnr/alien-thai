@@ -1,0 +1,1 @@
+import{n as e}from"./dom.DrlNSCJt.js";import{n as t}from"./math.DZB3tBV_.js";import{t as n}from"./scroll-effects.wPH7Vp0l.js";import{n as r}from"./media.DOjxPaYU.js";function i(){let r=e(`[data-hero-photo]`);r&&n(()=>{let e=t(scrollY/innerHeight);r.style.scale=String(1+.08*e),r.style.translate=`0 ${-3*e}%`})}r()&&i();

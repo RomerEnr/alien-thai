@@ -1,0 +1,1 @@
+import{t as e}from"./frame.DKL13uDJ.js";var t=[];function n(n){t.length===0&&e(()=>t.forEach(e=>e())),t.push(n),n()}export{n as t};

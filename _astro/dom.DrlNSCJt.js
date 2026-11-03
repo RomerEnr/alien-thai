@@ -1,0 +1,1 @@
+var e=(e,t=document)=>t.querySelector(e),t=(e,t=document)=>[...t.querySelectorAll(e)],n=(e,t,n)=>e.addEventListener(t,n,{once:!0}),r=e=>new Promise(t=>setTimeout(t,e));export{r as i,e as n,t as r,n as t};

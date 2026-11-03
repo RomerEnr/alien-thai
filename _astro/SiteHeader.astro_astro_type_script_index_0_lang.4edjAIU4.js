@@ -1,0 +1,1 @@
+import{n as e}from"./dom.DrlNSCJt.js";import{t}from"./frame.DKL13uDJ.js";var n=40;function r(){let r=e(`[data-site-header]`);if(!r)return;let i=()=>r.classList.toggle(`is-solid`,scrollY>n);t(i),i()}r();

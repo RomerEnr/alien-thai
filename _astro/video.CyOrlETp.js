@@ -1,0 +1,1 @@
+async function e(e){try{let t=await fetch(e);if(!t.ok)throw Error(`${t.status} ${e}`);return URL.createObjectURL(await t.blob())}catch{return e}}function t(e,t){e.muted=!0,e.preload=`auto`,e.src=t}function n(e){addEventListener(`touchstart`,()=>e.play().then(()=>e.pause(),()=>{}),{once:!0,passive:!0})}export{e as n,n as r,t};

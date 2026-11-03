@@ -1,0 +1,1 @@
+function e(e,t,n={}){let r=new IntersectionObserver(e=>{e.some(e=>e.isIntersecting)&&(r.disconnect(),t())},n);r.observe(e)}function t(e,t,n={}){let r=typeof n.threshold==`number`?n.threshold:0,i=new IntersectionObserver(e=>e.forEach(e=>t(e.target,e.isIntersecting&&e.intersectionRatio>=r)),n);e.forEach(e=>i.observe(e))}export{t as n,e as t};

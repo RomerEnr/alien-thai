@@ -1,0 +1,1 @@
+function e(e){let t=!1;return()=>{t||(t=!0,requestAnimationFrame(()=>{t=!1,e()}))}}function t(t){addEventListener(`scroll`,e(t),{passive:!0})}export{e as n,t};
